@@ -40,6 +40,7 @@ Write a few sentences about what you found in the data. What's the story here?
 
 Comparing the student fees from fall 2025 to fall 2024, students are paying more money in total in fall 2025. The rate each fee increases are all different however. The highest increasing fee is student activities at 14.6%, while athletics and student sustainability do not increase. The other fees are increasing at different rates, for some reason. The story here is why are these fees increasing, are students seeing any benefits from these increased fees they have to pay.
 
+tesitng character
 
 
 ```{r}
