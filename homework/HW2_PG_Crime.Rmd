@@ -62,7 +62,11 @@ Write up a lede and nutgraf of a story focused on the crime data in Prince Georg
 
 Data shows that PG County Residents have a likely chance to be victims of crimes involving motor vehicles.
 
-The four most common categories of crime reported in PG County this past year envolved motor vehicles. At the top was accident (5776), followed by auto stolen (4790), then theft from auto (4703), and finally accident with impound (3849). Then averaged by month, the same four categories are the only four categories that have over 300 crimes on average each month. The next highest on average is theft, at 284. It is more likely for PG County residents to be impacted by motor vehicle crime than even violent crime.  
+The four most common categories of crime reported in PG County this past year envolved motor vehicles. At the top was accident (5776), followed by auto stolen (4790), then theft from auto (4703), and finally accident with impound (3849). Then averaged by month, the same four categories are the only four categories that have over 300 crimes on average each month. The next highest on average is theft, at 284. It is more likely for PG County residents to be impacted by motor vehicle crime than even violent crime.
+
+
 ### Task 9: Save Your Work and Put it on GitHub
 
 Save this notebook, then commit it to your local repository. Push the changes to your GitHub repository and submit the URL for this file in ELMS.
+
+Testing.
