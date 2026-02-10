@@ -37,7 +37,7 @@ team_aces |> mutate(percentile = ntile(total_aces, 100))
 
 Write a couple of sentences that puts Maryland into context with the other teams in the dataset. You can do some Internet research to help with this.
 
-
+Based on the data above, Maryland is one of the best teams in the country at producing aces. Maryland is ranked 17th in the country with 223 total aces. This puts them at the 95th percentile. This means they are better than or the same as 95% of other teams in the country, and only 5% of other teams are better.
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
 
