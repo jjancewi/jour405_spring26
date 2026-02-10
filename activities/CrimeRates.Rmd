@@ -45,6 +45,8 @@ crimes_with_rates <- crimes |> mutate(violent_rate = violent_crime_total/populat
 
 Write a few sentences about what you found in the data. What years had the highest crime rates? What years had the lowest crime rates? Does the pattern match your expectations?
 
+The years with the highest property crime rates were the late 70's into the early 80's. From 1979 to 1981 the lowest property crime rates per year was 549.8. The lowest crime rates for property crime in Maryland are from 2018 through 2020. The highest property crime rate in those years was 204.3. The property crime rates follow a pattern that matches my expectations. Over the decades since the late 70's to the early 80's, property crime rates are usually dropping, besides a couple of spikes. This reinforces the theory that Maryland has gotten safer over time. Violent crime rates on the other hand do not match my expectations. The highest violent crime rates are in the mid 90's from 92-95. The lowest are from 2018-2020. This dosen't quite meet my expectations, because the pattern is that violent crime spikes in the mid 90's but wasn't as high in the early 80's. The one part that makes sense is that violent crime has dropped down in the most recent years as Maryland gets safer, and Covid-19 happened.
+
 
 
 
