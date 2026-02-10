@@ -37,11 +37,11 @@ team_aces |> mutate(percentile = ntile(total_aces, 100))
 
 Write a couple of sentences that puts Maryland into context with the other teams in the dataset. You can do some Internet research to help with this.
 
-Based on the data above, Maryland is one of the best teams in the country at producing aces. Maryland is ranked 17th in the country with 223 total aces. This puts them at the 95th percentile. This means they are better than or the same as 95% of other teams in the country, and only 5% of other teams are better.
+Based on the data above, Maryland is one of the best teams in the country at producing aces. Maryland is ranked 17th in the country with 223 total aces. This puts them at the 95th percentile. This means they are better than or the same as 95% of other teams in the country, and only 5% of other teams are better. Maryland still however had a losing record at 14-17, even with their strength in getting aces. The strength of getting aces isn't as important as getting kills in volleyball, which can tell us that Maryland's strength wasn't too impactful on their win loss record.
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
 
-upload
+uploads
 
 
 
