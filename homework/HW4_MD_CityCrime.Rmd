@@ -61,3 +61,16 @@ Ocean City reported a crime rate of 13.1 in 2019, which increased just ever so s
 upload
 
 Save this notebook, then commit it to your local repository. Push the changes to your GitHub repository and submit the URL for this file in ELMS.
+
+### Task 10: Hwk 5 Percentiles
+
+```{r}
+md_cities_percentiles <- md_cities_rates |> mutate(percentile = ntile(violent_rate_2020, 100))
+```
+
+Excluding Prince Annes, which is exactly at the 90th percentile, there are 10 cities in Maryland abover the 90th percentile in 2020 violent crime rate.
+
+```{r}
+md_cities_percentiles |> summarize(violent_IQR = IQR(violent_rate_2020))
+```
+Knowing the IQR is definitely helpful and informative, but it doesn't change my opinion about what the story is in the data. To me the biggest story is still the crime rates of Ocean City. If I were to do an outlier test, the crime rates for Ocean City would show up. This would then prove that crime rates in Ocean City is much higher than most other places in Maryland.This furthers the point that residents of Ocean City need to pay attention to this data.
