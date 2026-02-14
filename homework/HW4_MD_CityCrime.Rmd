@@ -74,3 +74,5 @@ Excluding Prince Annes, which is exactly at the 90th percentile, there are 10 ci
 md_cities_percentiles |> summarize(violent_IQR = IQR(violent_rate_2020))
 ```
 Knowing the IQR is definitely helpful and informative, but it doesn't change my opinion about what the story is in the data. To me the biggest story is still the crime rates of Ocean City. If I were to do an outlier test, the crime rates for Ocean City would show up. This would then prove that crime rates in Ocean City is much higher than most other places in Maryland.This furthers the point that residents of Ocean City need to pay attention to this data.
+
+upload.
