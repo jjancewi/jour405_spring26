@@ -46,8 +46,8 @@ car_thefts |>
 
 Is the distribution normal or skewed in one direction? Write a sentence in which you describe the range of the data covered by one standard deviation from the mean on both sides - how much of the data falls in that range?
 
-I would describe the data in the graph as 72 % normal, it is not perfectly normal, but it is somewhat close. The highest column is close to the mean, and all of the highest colums are within one standard deviation for both directions.Out of the 31 total values, 20 of them are within the range of one standard deviation from the mean. This means at 64.5% of the dat apoints are in the range.
+I would describe the data in the graph as 89 % normal, it is not perfectly normal, but it is somewhat close. The highest column is close to the mean, and all of the highest columms are within one standard deviation for both directions.Out of the 31 total values, 21 of them are within the range of one standard deviation from the mean. This means at 67% of the data points are in the range.
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
 
-Upload
+Uploads
