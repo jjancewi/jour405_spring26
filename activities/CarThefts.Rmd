@@ -50,4 +50,4 @@ I would describe the data in the graph as 89 % normal, it is not perfectly norma
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
 
-Uploads
+Uploads.
