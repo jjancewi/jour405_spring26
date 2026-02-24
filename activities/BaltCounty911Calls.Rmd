@@ -297,5 +297,6 @@ top_outliers |> kable(digits = 2)
 
 Based on our z-score analysis, what are some potential angles for reporting? What would your next steps be and what would you tell an editor about your findings?
 
-ANSWER HERE
+Some potential angles for reporting on this topic would be why do some days have such big outliers compared to the average day of 911 overdoese calls. Is there any throughline for each date? Or is it completely by chance that some days are much bigger outleris than others? What are the conditions that make this a possibility? I would then go to my editor that throughout the year there are many outliers of 911 overdose calls in each direction, and that I am trying to figure out a pattern why the outliers occur.
 
+Uploads.
