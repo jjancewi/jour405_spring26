@@ -74,7 +74,7 @@ summary(daily_calls$call_count)
 
 Let's visualize the time series of daily calls. What patterns do you see? If you had to draw horizontal lines that would highlight unusual days, where would those lines be?
 
-ANSWER HERE
+The pattern I see in the data is that the daily 911 overdose trend is higher in the spring around April, then falls in the summer besides a couple of outlier. The highest is early fall, but as the year got later it generally goes down besides one outlier.
 
 ```{r daily-calls-plot}
 # Plot daily call volume
@@ -137,8 +137,7 @@ unusual_days |>
 
 Let's visualize these unusual days in the context of the full dataset. How do they differ from your answer on Task 3?
 
-ANSWER HERE
-
+The difference visually is the use of call volume with the dataset of normal, unusually high, and low. The use of grey for normal, red for high, blue for low, gives the viewer the ability to see what is a normal data plot and what isn't.
 ```{r plot-unusual-days}
 # Create a clean factor for the plot legend
 daily_calls <- daily_calls |>
@@ -207,7 +206,7 @@ ggplot(dow_summary, aes(x = day_of_week, y = avg_calls)) +
 
 We can also calculate z-scores that account for the day of the week pattern. How would you describe the day with the highest z-score without using the term "z-score"?
 
-ANSWER HERE
+Compared to the normal intake of 911 overdose calls on any given day in 2022, October 4th was the most removed from the average daily 911 overdose calls in Baltimore in 2022. 
 
 ```{r day-of-week-z-scores}
 # Calculate day-of-week adjusted z-scores
