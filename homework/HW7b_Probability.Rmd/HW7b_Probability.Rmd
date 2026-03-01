@@ -178,6 +178,8 @@ Many White House staffers are being underpaid for their work, data shows.
 Out of the 396 white house staffers the "middle range" of salaries is more than one standard deviation lower than expected at -1.45. This is because the probability a White House staffer makes less than $150,000 is at 83.1%.
 
 The next thing I would do in the story is the probability for when the White House staffers were hired. Were they all hired in the same couple of months. Furthermore, I would then try to calculate the age of the white house staffers, are the people with more seniority in government getting higher wages? I would compare these probabilities to Congressional Staffers since the last Congress. Other data and analysis that would help would be looking back at previous white house staffs for previous Presidents, and seeing what that data/probability looks like compared to this one.
+
+upload.
 ### Task 8: Save Your Work and Put it on GitHub
 
 Save this notebook, then commit it to your local repository. Push the changes to your GitHub repository and submit the URL for this file in ELMS.
