@@ -134,3 +134,5 @@ When a 1000 different independent random samples tend to cluster around the same
 The first question is if the poll is randomly sampled. The next question I would have is how reprisentative is the poll's sample of the population it's polling. If the 50 people is a large enough sample of the population that would be good, but if not that would be very bad. If it isn't it would lead to data that could be very misleading for the actual population, and just plainly wrong.
 
 When finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
+
+Uploads.
