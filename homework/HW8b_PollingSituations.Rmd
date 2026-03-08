@@ -136,4 +136,7 @@ It would be about roughly 20 people, because the population proportion is roughl
 **Imagine you are covering the 2028 presidential election and a campaign shares a poll showing White Evangelical support at 78%.** The poll sampled 400 people. Based on everything you've seen in this assignment and in class, what would you want to know before reporting that number?
 
 The first question is if the poll is randomly sampled. The next question I would have is how representative is the poll's sample of the population it's polling. If the rouglyh 40 people is a large enough sample of the population that would be good, but if not that would be very bad. If it isn't it would lead to data that could be very misleading for the actual population, and just plainly wrong. also, in a Presidential Election is the poll a nationwide poll, a state poll, or a local/municipal poll? This drastically changes the population, and whether this poll could or should be even used/done.
+
 When finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
+
+upload
