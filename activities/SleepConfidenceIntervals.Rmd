@@ -183,3 +183,5 @@ Write a headline and a one-paragraph lede for a campus news story about student 
 A new survey suggests that UMD students average over seven hours of sleep per night.
 
 The CDC guideline suggests that college students should sleep at least 7 hours per night. The study polled 37 students on how many hours of sleep they got. From the data-set, there is a 95% confidence that students average between 7.95 and 7.5 hours of sleep per night. On average students at UMD are meeting CDC guidelines, but there are still some students in the sample set that slept under seven hours.
+
+upload.
