@@ -64,3 +64,5 @@ weekly_wmata |>
 **Answer this question:** Describe the trend you see. Is ridership going up, down, or staying flat? What are the big dips, and what might explain them? What would you want to know before writing a story about Metro weekly ridership trends?
 
 The trend I see on the graph is that ridership is going down somewhat gradually based on the red-dashed line. However, the big dip in winter really affects this, because throughout most of the year it seems ridership is actually slightly increasing. But, the big dip brings down the ridership so much that the slope line is slightly downwards. The big dips are outliers in ridership, when they are super low. The big dips are in the winter time. The cause of the dips is probably due to the holidays and more weather related events that lower ridership dramatically. For a story, I would want to know if METRO Bus service sees similar trends to their trains. I would also want to know the exact causes in the big dips, and what the long term trends are for WMATA ridership.
+
+upload.
