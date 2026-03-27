@@ -179,4 +179,6 @@ The analysis of the recent police data collected shows that Prince George's Coun
 
 To my editor I would say that we do not have the confidence to say that car thefts are going up or down. This is due to the very wide range for the confidence interval and mean.The month to month variation is somewhat masking if there is a real trend or no trend at all. To answer the question the next step would be to include more months to increase the sample size which will make the data more precise, or include something like a linear regression model for each month to see if there is a trend.
 
+upload
+
 When you are finished, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
