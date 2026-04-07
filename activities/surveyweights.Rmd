@@ -248,3 +248,5 @@ These differences affect reporting on likely voter turnout because it can lead t
 3. Why do you think these differences exist? What does this tell us about who might be over or under-represented in the sample?
 
 The differences exist because certain people are harder to reach than others. Also people will lie to pollsters on surveys, due to various reasons. The innacuracies that stem from these or other reasons may over or under represent groups in the sample. For example, in the rarely/never category the people answered that they were going to vote were over represented while the people who said no were under represented. This is because this group is eratic and hard to reach.
+
+upload.
