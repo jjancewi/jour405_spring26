@@ -1,0 +1,35 @@
+---
+title: "final_project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+
+
+This will be most of my data, I will have to manually input some of the rankings for 2021 because that year had less data than the rest. The only other data I need to collect is to find the same data of acceptance rates for peer universities to Maryland. I will select 10 other peer universities out of this data to do that.
+
+Links to the sources: https://www.usmd.edu/IRIS/DataJournal/Applications/?report=UG-Applicants-First-Time-Admission&Residency=OUT#
+https://www.usmd.edu/IRIS/DataJournal/Applications/?report=UG-Applicants-First-Time-Admission#
+https://www.usmd.edu/IRIS/DataJournal/Applications/?report=UG-Applicants-First-Time-Admission&Residency=MD#
+https://today.umd.edu/umd-rises-no-19-us-news-rankings-top-public-colleges-dd2ee090-44a7-4534-a0fa-903f46c8e9bf
+https://github.com/frishberg/Archive-of-US-News-College-Rankings/blob/main/data.csv
+https://www.aronfrishberg.com/projects/usnews
+https://www.washington.edu/research/wp-content/uploads/US-NewsRankings_2021Undergraduate-2022Graduate_2021GlobalFinal.pdf
+
+
+
+## The Data
+
+```{r load-data}
+umd_total <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTKW1tniQ6YzHPGymOLiG6FVWNttdRldiqiRGbfjNmu4D5ktljJSoVUQBZZgSSXowAQfxBZL2ZPgHw6/pub?output=csv")
+
+umd_outstate <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTwL-MKQaRGvRLdNoyJdvy2iiVIJrURsu4b9PP4_hv7X3d5fGmK8XftphpWlKWdNlrXdVBjM3ua100K/pub?output=csv")
+
+umd_instate <-read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQVATeqEyiCDPYh3sRUqSaNzK7T0CvRBXWN3TxsvOjjps3kspyODWp59geqYOKQrbVuVtQrCdPO65Fu/pub?output=csv")
+
+us_news_rankings <-read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTMyKnrvJ48Xmj_Bebg806Z3yXWI3ahQvAn2YbxYsSuW0H1k1avXQTQo1cnBbiUvqUSQbzr6K6UYq1-/pub?output=csv")
+
+```
