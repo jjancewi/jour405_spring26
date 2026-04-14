@@ -49,5 +49,22 @@ matches |>
 
 ### Task 6: Describe the results of both the correlation calculation and the scatterplot.
 
+The result of the correlation data, 0.01806, means that the relationship of fouls and goal differential in a match means that there is relatively no correlation between goal differential and fouls The scatter plot dots are uniformally spread, which also shows that there is no real correlation between goal differential and foul rate. This also means that the amount of fouls teams rack up dosen't really have an impact on the game at all.
+
+
+### Task 7: Choose another variable and repeat the steps in Task 4-5, then describe the result
+```{r}
+matches |> summarize(correlation = cor(corners, goal_diff, method="pearson"))
+```
+
+```{r}
+matches |> 
+  ggplot() +
+  geom_point(aes(x=goal_diff, y=corners)) +
+  geom_smooth(aes(x=goal_diff, y=corners), method="lm")
+```
+
+The result of the correlation data between corner kicks and goal differential is roughly 0.38. This means that there is some positive relationship there. The scatterplot also coraborates this as the trend of the line shows that more corner kicks are more likely to result in a higher goal differential. What this means is that more corner kicks helps teams win, but it is not the dominant factor.
+
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
