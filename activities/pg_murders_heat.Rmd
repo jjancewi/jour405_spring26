@@ -48,4 +48,6 @@ murders |>
 
 The correlation result of 0.58 means that there is a positive correlation between temperature and murder rate in PG County. This is also backed up by the scatter plot that shows the confidence interval rising as temperature increases and murder rate increases in the summer months. This means that the warmer it gets there is more likely to be more murders.
 
+upload.
+
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
