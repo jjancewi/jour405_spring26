@@ -56,6 +56,6 @@ Write a few sentences about the relationship between the DJIA and GDP. Is there 
 Based on the data there is a strong correlation between the DJIA and GDP. The Correlation Coefficient is at 0.95, which is a very high positive correlation. Furthermore the scatterplot clearly shows the trend that there is nearly an exact linear increase for both variable if both variables increase. Essentially, one goes up, and the other one does too. Now, it is not a perfect correlation as some scatterplot points are not on the linear reggresion line, but most are.
 
 
-
+upload.
 
 When you are done, save your work, switch to GitHub Desktop, then add, commit and push your changes to GitHub and submit the URL of the notebook in ELMS.
