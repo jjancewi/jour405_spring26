@@ -40,5 +40,7 @@ us_news_rankings <-read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTM
 
 The type of test I want to run for my project is a null hypothesis test. I want to pit Maryland versus 10 other similar Public Institutions and my Hypothesis is that Maryland's school ranking has risen higher than other schools, due to the change in admission rates changing. This will be similar to the HypothesisTesting assignment we did in class. I will try to find if the data proves my hypothesis, if it is statistically significant, meaningfully significant, and the effect size. 
 
+upload.
+
 
 
