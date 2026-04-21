@@ -142,3 +142,5 @@ You've now run two models, examined the data quality and seen that even a cleane
 Write a short story pitch (3-5 sentences) that addresses the following: Does the data support or contradict the claim? What data quality issues did you find? What would you need - different data, a different model, additional reporting - before you could responsibly publish a story about this claim? Who would you call first?
 
 The data in the model contradicts the claim that fewer students on FARMS leads to higher math test scores. The model itself is not reliable at all because the data used in the model barely correlates and we can not trust the results of the model at all with a 6.4% R squared percentage. We would need different data such as demographics of the students, where in the county they live, the grades of the students, which math classes they are and more. I would call the schools to release that data of each students, and the county census to get census data on the demographics.
+
+upload.
