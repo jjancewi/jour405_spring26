@@ -9,7 +9,7 @@ Multiple regression analysis is a statistical method used to understand the rela
 
 ```{r setup}
 library(tidyverse)
-#install.packages('corrplot')
+install.packages('corrplot')
 library(corrplot)
 ```
 
@@ -26,7 +26,7 @@ teams <- read_csv("https://raw.githubusercontent.com/dwillis/jour405_files/main/
 Next, we construct a linear model to analyze how different factors like `Yards Gained`, `Takeaways`, and `Points Scored` influence the number of wins. This model helps us quantify the relationships and assess which factors are significant predictors of success.
 
 ```{r}
-model <- lm(Wins ~ `Yards Gained` + Takeaways + `Points Scored`, data = teams)
+model <- lm(Wins ~ Takeaways + `Points Scored`, data = teams)
 summary(model)
 ```
 
@@ -54,7 +54,7 @@ The coefficients tell us the estimated effect of each independent variable on th
 
 Is this a useful model, based on what you've seen? Why?
 
-ANSWER HERE
+I would say this model is not really useful, maybe only somewhat useful in predicting the number of wins a NFL team has in a season. At the time of the model, teams played 16 games a season, now teams play 17. The min and max of the residuals are why I am hesitant to use this model. Those residuals being roughly  +4 and -4, mean that the error rate of this model could sell a team short by 4 wins or over rate a team by 4 wins. In a 16 or 17 game season, 4 games is a massive difference. Those 4 wins, or losses can change entire standings, and would really not be accurate if it is off by that much.
 
 ## Correlation Analysis
 
@@ -80,8 +80,29 @@ The results from our correlation analysis show the strength of the relationships
 
 Which of these three factors - Yards Gained, Takeaways and Points Scored - have the most impact on wins? Are there any that do not seem impactful at all?
 
-ANSWER HERE
+
+```{r}
+model <- lm(Wins ~ `Takeaways` + `Giveaways`+ `Points Scored`, data = teams)
+summary(model)
+```
+
+```{r}
+selected_vars <- teams |>  select(`Takeaways`, `Giveaways`, `Points Scored`, Wins)
+cor(selected_vars)
+```
+
+
+```{r}
+corr_matrix <- cor(selected_vars)
+corrplot(corr_matrix, method = "circle")
+```
+
+
+
+Out of the three categories, points scored is the most impactful. Takeaways would then be the second most impactful, and a category like yards gained isn't actually all that impactful. The categories like points scored and giveaways have higher coefficients and impact the adjusted r-squared score more so than the yards gained statistic. The yards gained statistic also overlaps with points scored, which weakens the model. This is why I took it out of the new model I created, the new model is much stronger without it.
 
 ## Using the Model (3 points)
 
 Without using the words "multiple regression model", describe how you could use this model to cover a team or game.
+
+I could use this model to compare teams play styles and roster decisions. With the new model I created that is much better in predicting wins and losses (with a smaller error rate/range) it could tell me which teams are building their roster's in a more correct manner that is condusive to winning more games. For example, If I run this model for all of the teams this past year, I could then create a dataset for all of the teams' roster's and salary situations. Then based on this model I could find which teams are using their money in a way that is leading to winning more games, and which teams are spending money in the wrong way. 
