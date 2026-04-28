@@ -8,19 +8,6 @@ library(tidyverse)
 ```
 
 
-
-This will be most of my data, I will have to manually input some of the rankings for 2021 because that year had less data than the rest. The only other data I need to collect is to find the same data of acceptance rates for peer universities to Maryland. I will select 10 other peer universities out of this data to do that.
-
-Links to the sources: https://www.usmd.edu/IRIS/DataJournal/Applications/?report=UG-Applicants-First-Time-Admission&Residency=OUT#
-https://www.usmd.edu/IRIS/DataJournal/Applications/?report=UG-Applicants-First-Time-Admission#
-https://www.usmd.edu/IRIS/DataJournal/Applications/?report=UG-Applicants-First-Time-Admission&Residency=MD#
-https://today.umd.edu/umd-rises-no-19-us-news-rankings-top-public-colleges-dd2ee090-44a7-4534-a0fa-903f46c8e9bf
-https://github.com/frishberg/Archive-of-US-News-College-Rankings/blob/main/data.csv
-https://www.aronfrishberg.com/projects/usnews
-https://www.washington.edu/research/wp-content/uploads/US-NewsRankings_2021Undergraduate-2022Graduate_2021GlobalFinal.pdf
-
-
-
 ## The Data
 
 ```{r load-data}
@@ -44,6 +31,179 @@ The type of test I want to run for my project is a null hypothesis test. I want 
 Another test I can run is a Z-Score test similar to the CarTheft Z-score activity. This would be helpful to find if Maryland's change in rankings is close to the mean of school's change in rankings over time or if Maryland is an outlier compared to similar Universities.
 
 upload.
+
+
+## Test Run
+
+```{r}
+library(tidyverse)
+```
+
+
+**Null Hypothesis (H₀):** There is no significant difference in University of Maryland College Park's ranking change overtime compared to peer institutions.
+
+**Alternative Hypothesis (H₁):**  University of Maryland College Park's ranking has increased significantly compared to peer institutions overtime.
+
+
+```{r}
+colnames(us_news_rankings)
+```
+
+
+```{r}
+# Identify all year columns (4-digit numbers)
+year_cols <- grep("^[0-9]{4}$", colnames(us_news_rankings), value = TRUE)
+
+# Convert all year columns to character BEFORE pivoting
+us_news_rankings_fixed <- us_news_rankings |>
+  mutate(across(all_of(year_cols), as.character))
+
+# Now pivot safely
+rankings_long <- us_news_rankings_fixed |>
+  pivot_longer(
+    cols = all_of(year_cols),
+    names_to = "year",
+    values_to = "ranking"
+  ) |>
+  mutate(
+    year = as.integer(year),
+    ranking = as.numeric(ranking)
+  ) |>
+  arrange(Name, year)
+```
+
+
+```{r}
+ranking_changes <- rankings_long |>
+  filter(year >= 2010) |>              # keep only 2010 and later
+  filter(!is.na(ranking)) |>           # remove missing rankings
+  group_by(Name) |>
+  arrange(Name, year) |>
+  summarize(
+    start_year = first(year),
+    start_rank = first(ranking),
+    end_year   = last(year),
+    end_rank   = last(ranking),
+    change = start_rank - end_rank
+  )
+```
+
+
+
+```{r}
+umd_change <- ranking_changes |>
+  filter(Name == "University of Maryland") |>
+  pull(change)
+
+peer_changes <- ranking_changes |>
+  filter(Name != "University of Maryland") |>
+  pull(change)
+```
+
+
+```{r}
+peer_summary <- tibble(
+  sample_size = length(peer_changes),
+  sample_mean = mean(peer_changes),
+  sample_sd = sd(peer_changes),
+  standard_error = sample_sd / sqrt(sample_size)
+)
+
+peer_summary
+```
+
+
+```{r}
+alpha <- 0.05
+
+t_test_result <- t.test(
+  peer_changes,
+  mu = umd_change,
+  alternative = "less"   # peers improved less → UMD improved more
+)
+
+t_test_result
+```
+
+```{r}
+p_value <- t_test_result$p.value
+
+results <- tibble(
+  `UMD Change` = umd_change,
+  `Peer Mean Change` = round(peer_summary$sample_mean, 2),
+  `Difference` = round(umd_change - peer_summary$sample_mean, 2),
+  `p-value` = round(p_value, 6),
+  `Significant?` = if_else(p_value < alpha, "Yes — reject H₀", "No — fail to reject H₀")
+)
+
+results
+```
+
+```{r}
+peer_df <- tibble(change = peer_changes)
+
+ggplot(peer_df, aes(x = change)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white", alpha = 0.7) +
+  geom_vline(xintercept = umd_change, color = "red", size = 1.2) +
+  labs(
+    title = "Ranking Change: UMD vs. Peer Public Universities (2010–2025)",
+    subtitle = paste("UMD change =", umd_change),
+    x = "Ranking Improvement (positive = improved)",
+    y = "Number of Schools"
+  ) +
+  theme_minimal()
+```
+
+
+```{r}
+effect_size <- (umd_change - mean(peer_changes)) / sd(peer_changes)
+
+effect_size_interpretation <- case_when(
+  abs(effect_size) < 0.2 ~ "Negligible",
+  abs(effect_size) < 0.5 ~ "Small",
+  abs(effect_size) < 0.8 ~ "Medium",
+  TRUE ~ "Large"
+)
+
+tibble(
+  `Cohen's d` = round(effect_size, 3),
+  `Interpretation` = effect_size_interpretation
+)
+```
+
+## Answer
+
+Here is the Link for the AI help with the error messages I was getting: https://copilot.microsoft.com/shares/ctnq6DCEnrSqiGdiXyXtg
+First, I modeled this test off the HypothesisTesting.Rmd, using it as a template pretty much exactly. This Hypothesis test is really the first part of what I am going to do. I have the data for the rankings, I need to get the data of the acceptance rates of 10 other schools, similar to the UMD data I have. This will help focus my project so I am not looking at hundreds of institutions. What this hypothesis test tells me just off the rankings changes data is first off, peer institutions on average had a ranking change of -7.86 points. Maryland saw a ranking change of 9 points (data from 2010 to 2025). That's a difference of 16.86 ranking points. The t-test shows a t-value -8.317 and a p-value of 1.653 x 10^-14 (extremely small). Because the p-value is so low, we have to reject the null hypothesis. This means my hypothesis that umd's ranking has changed upwards compared to the other school's is correct. The cause of this, I think it's acceptance rate's being lowered, but that is the next test I will run. The Cohen's D value of 0.647 (medium) shows that this change of ranking for UMD is not only statistically significant, but also meaningfully significant. This only furthers my point, and I am really interested to see what the data will look like with the acceptance rates being included.
+
+
+
+
+
+This will be most of my data, I will have to manually input some of the rankings for 2021 because that year had less data than the rest. The only other data I need to collect is to find the same data of acceptance rates for peer universities to Maryland. I will select 10 other peer universities out of this data to do that.
+
+Links to the sources: https://www.usmd.edu/IRIS/DataJournal/Applications/?report=UG-Applicants-First-Time-Admission&Residency=OUT#
+https://www.usmd.edu/IRIS/DataJournal/Applications/?report=UG-Applicants-First-Time-Admission#
+https://www.usmd.edu/IRIS/DataJournal/Applications/?report=UG-Applicants-First-Time-Admission&Residency=MD#
+https://today.umd.edu/umd-rises-no-19-us-news-rankings-top-public-colleges-dd2ee090-44a7-4534-a0fa-903f46c8e9bf
+https://github.com/frishberg/Archive-of-US-News-College-Rankings/blob/main/data.csv
+https://www.aronfrishberg.com/projects/usnews
+https://www.washington.edu/research/wp-content/uploads/US-NewsRankings_2021Undergraduate-2022Graduate_2021GlobalFinal.pdf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
