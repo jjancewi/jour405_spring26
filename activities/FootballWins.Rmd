@@ -105,4 +105,6 @@ Out of the three categories, points scored is the most impactful. Takeaways woul
 
 Without using the words "multiple regression model", describe how you could use this model to cover a team or game.
 
-I could use this model to compare teams play styles and roster decisions. With the new model I created that is much better in predicting wins and losses (with a smaller error rate/range) it could tell me which teams are building their roster's in a more correct manner that is condusive to winning more games. For example, If I run this model for all of the teams this past year, I could then create a dataset for all of the teams' roster's and salary situations. Then based on this model I could find which teams are using their money in a way that is leading to winning more games, and which teams are spending money in the wrong way. 
+I could use this model to compare teams play styles and roster decisions. With the new model I created that is much better in predicting wins and losses (with a smaller error rate/range) it could tell me which teams are building their roster's in a more correct manner that is conducive to winning more games. For example, If I run this model for all of the teams this past year, I could then create a dataset for all of the teams' roster's and salary situations. Then based on this model I could find which teams are using their money in a way that is leading to winning more games, and which teams are spending money in the wrong way. 
+
+upload.
