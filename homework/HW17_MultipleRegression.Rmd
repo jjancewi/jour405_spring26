@@ -145,3 +145,5 @@ ggplot(model_comparison, aes(x = reorder(Model, Adjusted_R_squared), y = Adjuste
 Without using the words "multiple regression model", describe how you could use this analysis to cover an election or voter participation story.
 
 This analysis can be used to explain why voter turnout in Maryland varies so much across it's counties. The results show that turnout tends to be higher in places with higher income, older populations, and large portion of white residents. These patterns can help us identify where civic engagement is high and where areas there needs to be additional outreach to improve voter turnout. Also, counties that have a lower average income or younger residents may have different challenges that prevents them from participating in voting. This could be the larger story, why do these lower income areas or areas of a younger population have barriers that are preventing them from voting? 
+
+upload.
