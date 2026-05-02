@@ -1,6 +1,6 @@
 ---
 title: "Multiple Regression Analysis: Maryland Voter Turnout"
-name: "YOUR NAME HERE"
+name: "Jona Jancewicz"
 ---
 
 # Introduction
@@ -26,7 +26,7 @@ head(md_turnout)
 
 Before building our model, let's explore the data to understand the variables and their relationships. Examine the correlation matrix to see how the independent variables relate to each other and to the dependent variable (voter turnout). Which variables seem to be correlated? Are there any that are not correlated at all? Also look at the multiple scatterplots. Which variables seem to have a linear relationship with the dependent variable? Which do not?
 
-ANSWER HERE
+Some the variables with the highest correlation are pct_bachelors_higher and turnout (high positive correlation), and pct_white also has positive correlation with turnout. The one that looks to have no correlation with turnout is population. Large and small countries can vary. Based on the scatter plots, the variables that seem to have a linear relationship with the dependent variable are pct_white, income, and median age. Those have a positive linear relationship while unemployment has a slight downward trend. Population has no linear relationship with the dependent variable.
 
 
 ```{r}
@@ -89,7 +89,7 @@ The coefficients tell us the estimated effect of each independent variable on th
 
 Examine the output of the model, checking the coefficients, residuals, and overall model fit. How well does this multiple variable model predict turnout? Do any of the variables seem to be insignificant? Is this a useful model, based on what you've seen? Why?
 
-ANSWER HERE
+While education and unemployment showed strong correlations with turnout in the correlation matrix, once you can control for race and age in the same model their no longer statistically significant. This means those variables are overlapping and diluting the significance of the data, and should not be used together in the same model. Overall, this model is still pretty useful based on what I have seen. It explains the variation in the voter turnout, it identifies 3 meaningful predictors (age, race, income), and it shows that some the variables like population and education may not matter as much as we previously thought.
 
 ```{r}
 # Build initial model with all predictors
@@ -103,19 +103,19 @@ summary(initial_model)
 
 Create three alternative models by adding or removing variables to see if we can improve the model's performance. Turnout will always be the dependent variable, but you should alter the independent variables by removing or adding some. Then compare the models using adjusted R-squared values. Are any of the models significantly better than the others?
 
-ANSWER HERE
+Models 2 and 3 are significantly better than model 4. This is because in model 4 we removed pct_bachelors_higher and pct_white. This shows that those two variables have the highest correlation with turnout and are best for improving the adjusted r-squared values.
 
 ```{r}
 # Model 2
-model2 <- lm(turnout ~ REPLACE ME, data = md_turnout)
+model2 <- lm(turnout ~ income + median_age + pct_white, data = md_turnout)
 summary(model2)
 
 # Model 3
-model3 <- lm(turnout ~ REPLACE ME, data = md_turnout)
+model3 <- lm(turnout ~ income + pct_bachelors_higher + median_age + pct_white, data = md_turnout)
 summary(model3)
 
 # Model 4
-model4 <- lm(turnout ~ REPLACE ME, data = md_turnout)
+model4 <- lm(turnout ~ income + median_age, data = md_turnout)
 summary(model4)
 
 # Compare models
@@ -144,4 +144,4 @@ ggplot(model_comparison, aes(x = reorder(Model, Adjusted_R_squared), y = Adjuste
 
 Without using the words "multiple regression model", describe how you could use this analysis to cover an election or voter participation story.
 
-ANSWER HERE
+This analysis can be used to explain why voter turnout in Maryland varies so much across it's counties. The results show that turnout tends to be higher in places with higher income, older populations, and large portion of white residents. These patterns can help us identify where civic engagement is high and where areas there needs to be additional outreach to improve voter turnout. Also, counties that have a lower average income or younger residents may have different challenges that prevents them from participating in voting. This could be the larger story, why do these lower income areas or areas of a younger population have barriers that are preventing them from voting? 
