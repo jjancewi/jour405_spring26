@@ -3,52 +3,38 @@ title: "final_project"
 output: html_document
 ---
 
+
+### Part 1: Rankings Change Hypothesis Test
+
+### Task 1: Load the tidyverse and print hypothesis
+
 ```{r setup, include=FALSE}
 library(tidyverse)
+install.packages('corrplot')
+library(corrplot)
 ```
 
+**Null Hypothesis (H₀):** There is no significant difference in University of Maryland College Park's ranking change from 1998 to 2025 compared to peer institutions rankings change.
 
-## The Data
+**Alternative Hypothesis (H₁):**  University of Maryland College Park's ranking has changed significantly from 1998 to 2025 compared to peer institutions rankings change overtime.
+
+
+### Task 2: Load data
 
 ```{r load-data}
-umd_total <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTKW1tniQ6YzHPGymOLiG6FVWNttdRldiqiRGbfjNmu4D5ktljJSoVUQBZZgSSXowAQfxBZL2ZPgHw6/pub?output=csv")
-
-umd_outstate <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTwL-MKQaRGvRLdNoyJdvy2iiVIJrURsu4b9PP4_hv7X3d5fGmK8XftphpWlKWdNlrXdVBjM3ua100K/pub?output=csv")
-
-umd_instate <-read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQVATeqEyiCDPYh3sRUqSaNzK7T0CvRBXWN3TxsvOjjps3kspyODWp59geqYOKQrbVuVtQrCdPO65Fu/pub?output=csv")
 
 us_news_rankings <-read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTMyKnrvJ48Xmj_Bebg806Z3yXWI3ahQvAn2YbxYsSuW0H1k1avXQTQo1cnBbiUvqUSQbzr6K6UYq1-/pub?output=csv")
 
 ```
 
-
-
-## The Type of Test
-
-The type of test I want to run for my project is a null hypothesis test. I want to pit Maryland versus 10 other similar Public Institutions and my Hypothesis is that Maryland's school ranking has risen higher than other schools, due to the change in admission rates changing. This will be similar to the HypothesisTesting assignment we did in class. I will try to find if the data proves my hypothesis, if it is statistically significant, meaningfully significant, and the effect size. 
-
-
-Another test I can run is a Z-Score test similar to the CarTheft Z-score activity. This would be helpful to find if Maryland's change in rankings is close to the mean of school's change in rankings over time or if Maryland is an outlier compared to similar Universities.
-
-upload.
-
-
-## Test Run
-
-```{r}
-library(tidyverse)
-```
-
-
-**Null Hypothesis (H₀):** There is no significant difference in University of Maryland College Park's ranking change overtime compared to peer institutions.
-
-**Alternative Hypothesis (H₁):**  University of Maryland College Park's ranking has increased significantly compared to peer institutions overtime.
-
+### Task 3: Sort Columns In Data
 
 ```{r}
 colnames(us_news_rankings)
 ```
+For task 3 I am checking the column names so that I understand the structure of the data set so that I know which columns represent years.
 
+### Task 4: AMake Sure Columns have the correct value in the spreadsheat
 
 ```{r}
 # Identify all year columns (4-digit numbers)
@@ -72,23 +58,25 @@ rankings_long <- us_news_rankings_fixed |>
   arrange(Name, year)
 ```
 
+For task 4 I am reshaping the rankings data into the long format with one row per school so R Studio is able to filter and analyze by year.
+
+### Task 5: Filter Data to range of 2025-2010
 
 ```{r}
 ranking_changes <- rankings_long |>
-  filter(year >= 2010) |>              # keep only 2010 and later
-  filter(!is.na(ranking)) |>           # remove missing rankings
-  group_by(Name) |>
-  arrange(Name, year) |>
-  summarize(
-    start_year = first(year),
-    start_rank = first(ranking),
-    end_year   = last(year),
-    end_rank   = last(ranking),
-    change = start_rank - end_rank
-  )
+  filter(year %in% c(2010, 2025), !is.na(ranking)) |>
+  pivot_wider(
+    names_from = year,
+    values_from = ranking,
+    names_prefix = "rank_"
+  ) |>
+  filter(!is.na(rank_2010), !is.na(rank_2025)) |>
+  mutate(change = rank_2010 - rank_2025)
 ```
 
+For Task 5: I isolated the years of 2010 to 2025 in the data set for the schools and also had R Studio calculate the change in rankings for the schools.
 
+### Task 6: Filter UMD Data and Data of all other schools
 
 ```{r}
 umd_change <- ranking_changes |>
@@ -100,6 +88,9 @@ peer_changes <- ranking_changes |>
   pull(change)
 ```
 
+For Task 6 I separated UMD's rankings change from all other peer institutions so I could compare UMD against it's peers.
+
+### Task 7: Find Mean, Standard Deviation, and Error
 
 ```{r}
 peer_summary <- tibble(
@@ -112,32 +103,42 @@ peer_summary <- tibble(
 peer_summary
 ```
 
+For Task 7 I had RStudio calculate some statistics such as sample size, mean, standard deviation, and error for all the peer institutions.
+
+### Task 8: UMD Z Score Relative to Peers
 
 ```{r}
-alpha <- 0.05
+peer_mean <- mean(peer_changes)
+peer_sd   <- sd(peer_changes)
 
-t_test_result <- t.test(
-  peer_changes,
-  mu = umd_change,
-  alternative = "less"   # peers improved less → UMD improved more
-)
+z <- (umd_change - peer_mean) / peer_sd
 
-t_test_result
+# one-sided: probability of being at least this large above the mean
+p_value <- pnorm(z, lower.tail = FALSE)
+
+z
+p_value
 ```
+For Task 8 I had RStudio calculate UMD's Z score and P-value against it's peers to see if UMD's rankings change was unusual compared to it's peers.
+
+### Task 9: Test for Significance
 
 ```{r}
-p_value <- t_test_result$p.value
-
 results <- tibble(
   `UMD Change` = umd_change,
-  `Peer Mean Change` = round(peer_summary$sample_mean, 2),
-  `Difference` = round(umd_change - peer_summary$sample_mean, 2),
+  `Peer Mean Change` = round(peer_mean, 2),
+  `Difference` = round(umd_change - peer_mean, 2),
+  `z-score` = round(z, 3),
   `p-value` = round(p_value, 6),
-  `Significant?` = if_else(p_value < alpha, "Yes — reject H₀", "No — fail to reject H₀")
+  `Significant?` = if_else(p_value < 0.05, "Yes — UMD improved more", "No — not significantly different")
 )
 
 results
 ```
+
+For Task 9 I pretty much just summarized all the results into one table that shows difference, Z score, P-value, and statistical significance.
+
+### Task 10: Create a Histogram
 
 ```{r}
 peer_df <- tibble(change = peer_changes)
@@ -153,7 +154,9 @@ ggplot(peer_df, aes(x = change)) +
   ) +
   theme_minimal()
 ```
+For Task 10 I created a Histogram that visualizes UMD's rankings change versus peer institutions, so it be compared visually.
 
+### Task 11: Find Cohen's D Value
 
 ```{r}
 effect_size <- (umd_change - mean(peer_changes)) / sd(peer_changes)
@@ -171,13 +174,380 @@ tibble(
 )
 ```
 
-## Answer
+For Task 11 I had RStudio calculate the Cohen's D variable for the data to see the practical effect and how meaningful UMD's ranking change is.
+
+### Part 1 Answer
 
 Here is the Link for the AI help with the error messages I was getting: https://copilot.microsoft.com/shares/ctnq6DCEnrSqiGdiXyXtg
-First, I modeled this test off the HypothesisTesting.Rmd, using it as a template pretty much exactly. This Hypothesis test is really the first part of what I am going to do. I have the data for the rankings, I need to get the data of the acceptance rates of 10 other schools, similar to the UMD data I have. This will help focus my project so I am not looking at hundreds of institutions. What this hypothesis test tells me just off the rankings changes data is first off, peer institutions on average had a ranking change of -7.86 points. Maryland saw a ranking change of 9 points (data from 2010 to 2025). That's a difference of 16.86 ranking points. The t-test shows a t-value -8.317 and a p-value of 1.653 x 10^-14 (extremely small). Because the p-value is so low, we have to reject the null hypothesis. This means my hypothesis that umd's ranking has changed upwards compared to the other school's is correct. The cause of this, I think it's acceptance rate's being lowered, but that is the next test I will run. The Cohen's D value of 0.647 (medium) shows that this change of ranking for UMD is not only statistically significant, but also meaningfully significant. This only furthers my point, and I am really interested to see what the data will look like with the acceptance rates being included.
+
+First, I modeled this test off the HypothesisTesting.Rmd, using it as a template pretty much exactly. This Hypothesis test is really the first part of what I am going to do. I have the data for the rankings, I need to get the data of the acceptance rates of 10 other schools, similar to the UMD data I have. This will help focus my project so I am not looking at hundreds of institutions. What this hypothesis test tells me just off the rankings changes data is first off, peer institutions on average had a ranking change of -8.28 points. Maryland saw a ranking change of 9 points (data from 2010 to 2025). That's a difference of 17.28 ranking points. 
+
+Next, I took your feedback from the earlier draft of this and updated the code for all peer institutions to be 2010 to 2025. Then I did Maryland's Z score change versus all other peer institutions. The Z score result is 0.726, and the updated P- value is 0.2338, which means that UMD's ranking change isn't statistically significant in relation to the rankings change of peer institutions from 2010 to 2025. This means we accept the null hypothesis.
+
+However, the Cohen's D value increased to 0.726. This means that in real life, practically, UMD is meaningfully above average. But the variation from the peer schools is so large that UMD's numbers are not statistically significant. Maryland did improve more than all peer institutions, but that could still be by chance which is why we have to accept the nully hypothesis.
+
+### Part 2: Correlation with Acceptance Rate for UMD and Linear Regression
+
+### Task 1: Load Data
+
+```{r load-data}
+umd_accept <- read_csv(
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQKNDG2BnRdCASebe5PgSF-HxG79mfxcEu3qTHAJ62IQxkANPccIz18RdFF3vDpLW1fz1AWFYp-iPfN/pub?output=csv",
+  col_names = FALSE
+)
+```
+For Task 1 the col_names false is so I can format the google spreadsheet in a way that is legible for RStudio.
+
+### Task 2:  Specify Rows in Dataset
+
+```{r load-data}
+accept_block <- umd_accept[22:37, ]
+```
+
+For Task 2 I selected the specific rows in the data set that had acceptance rate for Maryland schools from 2010 to 2025.
+
+### Task 3: Sort Columns to be matched up with specified rows and Column 9 = UMD
+
+```{r load-data}
+umd_accept <- accept_block |>
+  select(
+    year = X1,
+    umd_accept_rate = X9
+  ) |>
+  mutate(
+    year = as.integer(year),
+    umd_accept_rate = as.numeric(gsub("%", "", umd_accept_rate))
+  ) |>
+  filter(!is.na(year)) |>
+  arrange(year)
+```
+
+For Task 3 I asked Rstudio to extract the UMD column, change the percentages into numeric values so it works on RStudio and then organize by year.
+
+### Task 4: Load the Historical School Rankings Dataset From Earlier
+
+```{r load-data}
+# Load rankings dataset
+us_news_rankings <- read_csv(
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTMyKnrvJ48Xmj_Bebg806Z3yXWI3ahQvAn2YbxYsSuW0H1k1avXQTQo1cnBbiUvqUSQbzr6K6UYq1-/pub?output=csv"
+)
+
+# Identify year columns (2010–2025)
+year_cols <- grep("^[0-9]{4}$", colnames(us_news_rankings), value = TRUE)
+
+# Convert year columns to character (prevents pivot errors)
+us_news_rankings_fixed <- us_news_rankings |>
+  mutate(across(all_of(year_cols), as.character))
+
+# Create rankings_long
+rankings_long <- us_news_rankings_fixed |>
+  pivot_longer(
+    cols = all_of(year_cols),
+    names_to = "year",
+    values_to = "ranking"
+  ) |>
+  mutate(
+    year = as.integer(year),
+    ranking = as.numeric(ranking)
+  ) |>
+  arrange(Name, year)
+```
+
+For Task 4 I reloaded the US News Rankings I had prior in the Rstudio because I was getting an error message that I didn't have it, reloading it fixed it and this specifically merged the acceptance rate data with the rankings data. This reshaped the data into the long format that RStudio is able to read.
+
+### Task 5: Confirm that the school rankings data is loaded
+
+```{r load-data}
+head(rankings_long)
+```
+
+For Task 5 I ran the head() function to make sure the loaded data was showing up correctly.
+
+### task 6: Filter for University of Maryland in the rankings
+
+```{r load-data}
+umd_rank <- rankings_long |>
+  filter(Name == "University of Maryland",
+         year >= 2010,
+         year <= 2025
+  )
+```
+
+For Task 6 I filtered the UMD rankings data to match the acceptance rate data for the years 2010-2025.
+
+### Task 7: Combine UMD Rankings and Acceptance Rates into one Datasheet
+
+```{r load-data}
+umd_merged <- umd_rank |>
+  inner_join(umd_accept, by = "year")
+
+```
+
+For Task 7 I merged the UMD rankings and acceptance rate data into one dataset.
+
+### Task 8: Show the Year by Year changes for both Acceptance Rate and Rankings for UMD
+
+```{r load-data}
+umd_changes <- umd_merged |>
+  arrange(year) |>
+  mutate(
+    ranking_change = ranking - lag(ranking),
+    accept_change  = umd_accept_rate - lag(umd_accept_rate)
+  )
+```
+
+For Task 8 I asked RStudio to calculate the year by year changes for the merged data to show the change columns next to the raw merged data.
+
+### Task 9: Run Correlation Function between Acceptance Rates Change and Rankings Change
+
+```{r load-data}
+correlation_result <- cor(
+  umd_changes$ranking_change,
+  umd_changes$accept_change,
+  use = "complete.obs"
+)
+
+correlation_result
+```
+For Task 9 I had Rstudio run the correlation function between accpectance rates change and rankings change to see the correlation between the two variables.
+
+### Task 10: Create a Scatterplot Graph that shows Correlation between Accepctance Rate and Rankings Change
+
+```{r load-data}
+umd_changes |>
+  ggplot(aes(x = accept_change, y = ranking_change)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(
+    x = "Change in Acceptance Rate (percentage points)",
+    y = "Change in Ranking (positive = worse ranking)",
+    title = "UMD: Acceptance Rate Change vs Ranking Change (2010–2025)"
+  )
+```
+
+For Task 10 I created a scatterplot of the merged data points with a linear slope showing the correlaiton between the two variables.
+
+### Task 11: Run Linear Regression Model of Acceptance Rate and Rankings Data for UMD
+
+
+```{r load-data}
+model <- lm(ranking_change ~ accept_change, data = umd_changes)
+summary(model)
+```
+
+For Task 11 I asked RStudio to run a simple linear regression model between acceptance rate change and rankings change to see how much the two variables are related with each other.
+
+### Interpretation
+
+In comparing the change of acceptance rates and change of rankings for UMD I found that the correlation (-0.2530993) is negative and somewhat weak. When UMD's acceptance rate decreased the rankings only improve slightly. However, when UMD's acceptance rate increase the rankings decreased slightly. This means that the relationship is weak, which is why then I ran a linear regression model between the two data sets. The linear regression model only further backs up the finding in the correlation test. The coefficient (-.2078) is negative, meaning each time UMD's acceptance rate decreases by 1 point, UMD's ranking increases by 0.21 points. This is clearly a very small effect. The p-value is (0.3627), far above 0.05, which means that the relationship between acceptance rates and UMD rankings is not statistically significant. The adjusted R squared value is (-0.0079), meaning that acceptance rates really do not explain the variation in UMD's ranking changes. Clearly acceptance rates is not the way to predict UMD's ranking change. This means that there could be a variable that does correlate and explain the increase of UMD's rankings. This means the next thing to do is run a multiple regression test.
+
+### Part 3 - Multiple Regression
+### Task 1 - Load Data
+
+```{r load-data}
+umd_yield <- read_csv(
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTXTWC44zoUiYjgav1MqdXfFIeOHLa05ovOPtwb-RW0m1bkTPvu634AwGhb21f_PxJyTfF8PuMh1Goq/pub?output=csv",
+  col_names = FALSE
+)
+
+umd_apps <- read_csv(
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRn0NgSHkPnWpgkbXU9Cz3bbQfCoh1J6DgfXJExYUt0BoyXJuPu_XaCuN_cE7KRlNvXMkkz-NvDcs7f/pub?output=csv",
+  col_names = FALSE
+)
+```
+
+For Task 1 I did the previous thing I did in task 1 for Part 2 to have the Google Spreadsheets be in the same format.
+
+### Task 2: Locate the Yield Block Automatically in the Dataset
+
+```{r load-data}
+yield_start <- which(umd_yield$X1 == "Yield") + 1
+yield_end   <- yield_start + 15   # 2010–2025 = 16 rows
+
+```
+
+For Task 2 I had RStudio find the start and end rows for the Yield data in the google spreadhseet and focus on the years 2010-2025.
+
+### Task 3: Extract the Yieldblock from the dataset
+
+```{r load-data}
+yield_block2 <- umd_yield[yield_start:yield_end, ]
+
+```
+
+For Task 3 I cut all the rows that were not Yield data in the google spreadsheet.
+
+### Task 4: Assign column names to the dataset
+
+```{r load-data}
+colnames(yield_block2) <- paste0("X", 1:ncol(yield_block2))
+
+```
+
+For Task 4 I assigned names to the columns for the yield data.
+
+### Task 5: Single out the UMD Yield Column in the dataset
+
+```{r load-data}
+umd_yieldfinal <- yield_block2 |>
+  select(
+    year = X1,
+    umd_yieldfinal = X9  
+  ) |>
+  mutate(
+    year = as.integer(year),
+    umd_yield = as.numeric(gsub("%", "", umd_yieldfinal))
+  ) |>
+  filter(!is.na(year)) |>
+  arrange(year)
+
+```
+
+For Task 5 I singled out the UMD column, changed the percentages into numeric values for RStudio to read, and assigned the data to each correspondent year.
+
+### Task 6: Run the change of UMD Yield overtime
+
+```{r load-data}
+umd_yield_change <- umd_yieldfinal |>
+  mutate(yield_change = umd_yield - lag(umd_yield)) |>
+  select(year, yield_change)
+
+```
+
+For Task 6 I asked RStudio to calculate the year by year changes for UMD yield so that it will be a predictor in the multiple regression model.
+
+### Task 7: Repeat task 2-6 for Umd_apps
+
+```{r load-data}
+### Extract UMCP Applicants (same method as yield)
+
+# Locate the "N of Applicants" block
+apps_start <- which(umd_apps$X1 == "N of Applicants") + 1
+apps_end   <- apps_start + 15   # 2010–2025 = 16 rows
+
+# Slice the block
+apps_block <- umd_apps[apps_start:apps_end, ]
+
+# Assign column names
+colnames(apps_block) <- paste0("X", 1:ncol(apps_block))
+
+# Extract UMCP applicants (column X9)
+umd_appsfinal <- apps_block |>
+  select(
+    year = X1,
+    umd_apps = X9
+  ) |>
+  mutate(
+    year = as.integer(year),
+    umd_apps = as.numeric(gsub(",", "", umd_apps))
+  ) |>
+  filter(!is.na(year)) |>
+  arrange(year)
+
+# Compute year-to-year applicant change
+umd_apps_change <- umd_appsfinal |>
+  mutate(apps_change = umd_apps - lag(umd_apps)) |>
+  select(year, apps_change)
+
+```
+
+
+For Task 7 I redid the exact steps from Tasks 2 through 6 for the applications change variable, I just did it in a single RStudio block to save space as my RStudio is really long.
+
+### Task 8: Merge UMD application and yield data into the same dataset as the UMD acceptance rankings data
+
+```{r load-data}
+umd_model_data <- umd_changes |>
+  left_join(umd_yield_change, by = "year")
+
+# Then add applicants
+umd_model_data <- umd_model_data |>
+  left_join(umd_apps_change, by = "year") |>
+  filter(!is.na(apps_change))
+```
+
+For Task 8 I first put the UMD_changes data set into a data set so I could then merge the applicant data change into the UMD model data so all the predictors are in the same multiple regression model.
+
+### Task 9: Build the Multiple regression model for Ranking, Acceptance, Yield, and Application change overtime
+
+```{r load-data}
+model_multi2 <- lm(
+  ranking_change ~ accept_change + yield_change + apps_change,
+  data = umd_model_data
+)
+
+summary(model_multi2)
+```
+For Task 9 I had RStudio run a multiple regression model where rankings change is the outcome, applications change, yield change, and accpetance rate change as the predictors.
+
+### Task 10: Run the Correlation Matrix Function of the Multiple Regression Model Data
+
+```{r load-data}
+selected_vars2 <- umd_model_data |>
+  select(ranking_change, accept_change, yield_change, apps_change)
+
+cor(selected_vars2)
+```
+For Task 10 I had RStudio calculate the correlation matrix for all the variables to see their relationships with each other.
+
+### Task 11: Create the visualtion of the correlation matrix data
+
+```{r load-data}
+corrplot(cor(selected_vars2), method = "circle")
+```
+
+For Task 11 I had the correlation matrix visualized through circle program that we used in class, so we can see which variables are more correlated.
+
+###Interpretation
+
+This is a three-predictor multiple regression model. After the linear regression model showed that acceptance rate was not statistically significant I added more variables to conduct the multiple regression model. The other two variables I added were applicant numbers from 2010-2025 and yield for 2010-2025. The multiple regression model changed the outcome and result of the data dramatically. The acceptance rate change became statistically significant when applicant change was added to the model. This is because acceptance rate change and applicant change are strongly negatively correlated (the adjusted r squared -0.63). In the simple linear regression model I had no control over volume which diluted the acceptance rate's effect. Once I added the applicant change (applicant volume) as a separate predictor the model was able to isolate the effectiveness of acceptance rate change, making it statistically significant (P-value = 0.03 and coefficient -0.58). Yield change is the one variable that doesn't pass the test of statistical significance and is a metric that is not really useful in predicting UMD ranking change. Overall, when acceptance rates decrease UMD's rankings generally improve, when applicant number's increase UMD's rankings also generally increase. The adjusted R squared value of 0.4977 of the model shows that the model explains for nearly half the reasons of why UMD's rankings change. The overall P-value of the model ( 0.01384) shows that it is statistically significant. 
+
+
+## Story Pitch
+
+The University of Maryland's rise in school rankings over the past 15 years is not abnormal compared to peer institutions in the past 15 year. That is not the story to write about Maryland's change in rankings. Since 2010 Maryland rose 9 spots in the rankings while 124 peer institutions averaged a decrease in rankings by roughly 8 spots. Maryland is not far off other schools in the change of rankings during this time period, and the data shows that it is not statistically significant. However, the data does show that the stark difference in Maryland's rise to the peer institutions average drop in rankings still make this data meaningfully significant. 
+
+This is why the story for Maryland's rankings change is that we can potentially predict whether Maryland will drop in the rankings or rise in the rankings each year, and ask why the rankings can drastically change. Just taking a look at Maryland's acceptance rates each year and correlating them with Maryland's rankings each year was not enough, as there was a weak correlation between the two. Instead, I looked at multiple variables including, Maryland's yearly yield, and total number of applicants. I ran a model with all of those variables and two variables wound up statistically significant. The two are acceptance rate change and application change. Acceptance rate change became statistically significant with the introduction of the application of change because I was able to control the volume. This showed a stronger correlation between acceptance rate change and rankings change. In addition, application change also had a stronger correlation with rankings change, while the yield change did not. The overall model showed that with just those three variable (really 2) were able to predict half the reasons why Maryland's school rankings change.
+
+There are several problems and limitations currently with this entire model that can be fixed. One problem is that while the 15 year data-set is a decent amount of data, there is the potential for more data for rankings changes. What would need to be done is a request to access US News Rankings Archive to get their rankings data for all the schools for the past 30 years at least. Also, in that same request we would need a copy of the methodology US News has to conduct their rankings. This would help the multiple regression model as acceptance rate change and application rate change are both strongly correlated. If we found out the methodology that US News does we could potentially input a couple more variables that are publicly available data. This would then give us a model that can theoretically predict UMD's ranking with extreme confidence. 
+
+The reporting plan would start with the previous steps I just mentioned. Assuming US News can corroborate I would be able to then get the data and variables that would build a model that could predict the rankings of University of Maryland with high accuracy. This model would also be potentially be scalable for all schools that release their information like University of Maryland does. However, my next step after the model would then be to interview UMD's Dean of Admissions and the staff. My questions would be, why do they think application numbers have seen an upward trend, do they accept less applicants when more applicants apply in one year compared to the next, and has UMD changed it's marketing in the previous 15 years to try and gain more applications? These questions would provide causality to an already correlated relationship, which would provide the why to the story. Furthermore, then I would interview U.S. News staff that work on schools rankings. I would ask them if they similar trends among other schools where applications rise and acceptance rate's lower, and if UMD is an outlier. The story would break down into three parts: First part would be about being able to predict whether Maryland's ranking will increase or decrease in a given year. The second part would be about why Maryland's ranking keeps changing each year and over long periods of time. The third part of the story would be to see if the reason Maryland's ranking keeps fluctuating is an outlier or a part of a larger trend.
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### All Earlier Work
+
+### The Type of Test
+
+The type of test I want to run for my project is a null hypothesis test. I want to pit Maryland versus 10 other similar Public Institutions and my Hypothesis is that Maryland's school ranking has risen higher than other schools, due to the change in admission rates changing. This will be similar to the HypothesisTesting assignment we did in class. I will try to find if the data proves my hypothesis, if it is statistically significant, meaningfully significant, and the effect size. 
+
+
+Another test I can run is a Z-Score test similar to the CarTheft Z-score activity. This would be helpful to find if Maryland's change in rankings is close to the mean of school's change in rankings over time or if Maryland is an outlier compared to similar Universities.
+
+upload.
 
 
 This will be most of my data, I will have to manually input some of the rankings for 2021 because that year had less data than the rest. The only other data I need to collect is to find the same data of acceptance rates for peer universities to Maryland. I will select 10 other peer universities out of this data to do that.
